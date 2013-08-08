@@ -7,45 +7,45 @@ public class VideoPlayer : MonoBehaviour
 {
 #if UNITY_IPHONE && !UNITY_EDITOR
     [DllImport("__Internal")]
-    private static extern bool CanOutputToTexture(string videoURL);
+    private static extern bool VideoPlayerPluginCanOutputToTexture(string videoURL);
     [DllImport("__Internal")]
-    private static extern bool PlayerReady();
+    private static extern bool VideoPlayerPluginPlayerReady();
     [DllImport("__Internal")]
-    private static extern float DurationSeconds();
+    private static extern float VideoPlayerPluginDurationSeconds();
     [DllImport("__Internal")]
-    private static extern void Extents(ref int width, ref int height);
+    private static extern void VideoPlayerPluginExtents(ref int width, ref int height);
     [DllImport("__Internal")]
-    private static extern int CurFrameTexture();
+    private static extern int VideoPlayerPluginCurFrameTexture();
     [DllImport("__Internal")]
-    private static extern void PlayVideo(string videoURL);
+    private static extern void VideoPlayerPluginPlayVideo(string videoURL);
     [DllImport("__Internal")]
-    private static extern void PlayVideoView(int x, int y, int width, int height, string videoURL);
+    private static extern void VideoPlayerPluginPlayVideoView(int x, int y, int width, int height, string videoURL);
     [DllImport("__Internal")]
-    private static extern void PauseVideo();
+    private static extern void VideoPlayerPluginPauseVideo();
      [DllImport("__Internal")]
-    private static extern void ResumeVideo();
+    private static extern void VideoPlayerPluginResumeVideo();
     [DllImport("__Internal")]
-    private static extern void RewindVideo();
+    private static extern void VideoPlayerPluginRewindVideo();
     [DllImport("__Internal")]
-    private static extern void SeekToVideo(float time);
+    private static extern void VideoPlayerPluginSeekToVideo(float time);
     [DllImport("__Internal")]
-    private static extern bool IsPlaying();
+    private static extern bool VideoPlayerPluginIsPlaying();
     [DllImport("__Internal")]
-    private static extern void StopVideo();
+    private static extern void VideoPlayerPluginStopVideo();
 #else
-    private static bool CanOutputToTexture(string videoURL) { return false; }
-    private static bool PlayerReady() { return false; }
-    private static float DurationSeconds() { return 0f; }
-    private static void Extents(ref int width, ref int height) { }
-    private static int CurFrameTexture() { return 0; }
-    private static void PlayVideo(string videoURL) { }
-    private static void PlayVideoView(int x, int y, int width, int height, string videoURL) { }
-    private static void PauseVideo() { }
-    private static void ResumeVideo() { }
-    private static void RewindVideo() { }
-    private static void SeekToVideo(float time) { }
-    private static bool IsPlaying() { return false; }
-    private static void StopVideo() { }
+    private static bool VideoPlayerPluginCanOutputToTexture(string videoURL) { return false; }
+    private static bool VideoPlayerPluginPlayerReady() { return false; }
+    private static float VideoPlayerPluginDurationSeconds() { return 0f; }
+    private static void VideoPlayerPluginExtents(ref int width, ref int height) { }
+    private static int VideoPlayerPluginCurFrameTexture() { return 0; }
+    private static void VideoPlayerPluginPlayVideo(string videoURL) { }
+    private static void VideoPlayerPluginPlayVideoView(int x, int y, int width, int height, string videoURL) { }
+    private static void VideoPlayerPluginPauseVideo() { }
+    private static void VideoPlayerPluginResumeVideo() { }
+    private static void VideoPlayerPluginRewindVideo() { }
+    private static void VideoPlayerPluginSeekToVideo(float time) { }
+    private static bool VideoPlayerPluginIsPlaying() { return false; }
+    private static void VideoPlayerPluginStopVideo() { }
 #endif
 
     /// <summary>
@@ -55,7 +55,7 @@ public class VideoPlayer : MonoBehaviour
     {
         get
         {
-            return PlayerReady();
+            return VideoPlayerPluginPlayerReady();
         }
     }
 
@@ -66,7 +66,7 @@ public class VideoPlayer : MonoBehaviour
     {
         get
         {
-            return DurationSeconds();
+            return VideoPlayerPluginDurationSeconds();
         }
     }
 
@@ -74,7 +74,7 @@ public class VideoPlayer : MonoBehaviour
     {
         get
         {
-            return IsPlaying();
+            return VideoPlayerPluginIsPlaying();
         }
     }
     public Vector2 videoSize
@@ -82,7 +82,7 @@ public class VideoPlayer : MonoBehaviour
         get
         {
             int width = 0, height = 0;
-            Extents(ref width, ref height);
+            VideoPlayerPluginExtents(ref width, ref height);
             return new Vector2(width, height);
         }
     }
@@ -95,7 +95,7 @@ public class VideoPlayer : MonoBehaviour
     {
         get
         {
-            int nativeTex = ready ? CurFrameTexture() : 0;
+            int nativeTex = ready ? VideoPlayerPluginCurFrameTexture() : 0;
             if (nativeTex != 0)
             {
                 if (_videoTexture == null)
@@ -117,12 +117,12 @@ public class VideoPlayer : MonoBehaviour
 
     public void PlayView(Rect rect, string videoURL)
     {
-        PlayVideoView((int) rect.x, (int) rect.y, (int) rect.width, (int) rect.height, videoURL);
+        VideoPlayerPluginPlayVideoView((int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height, videoURL);
     }
 
     public void PlayView(int left, int top, int right, int bottom, string videoURL)
     {
-        PlayVideoView(left, top, right, bottom, videoURL);
+        VideoPlayerPluginPlayVideoView(left, top, right, bottom, videoURL);
     }
 
     public void PlayTexture(string videoURL)
@@ -132,9 +132,9 @@ public class VideoPlayer : MonoBehaviour
 
     public void PlayTexture(string videoURL, Material material)
     {
-        if (CanOutputToTexture(videoURL))
+        if (VideoPlayerPluginCanOutputToTexture(videoURL))
         {
-            PlayVideo(videoURL);
+            VideoPlayerPluginPlayVideo(videoURL);
             StartCoroutine(UpdateTexture(material, false));
         }
     }
@@ -168,28 +168,28 @@ public class VideoPlayer : MonoBehaviour
 
     public void Pause()
     {
-        PauseVideo();
+        VideoPlayerPluginPauseVideo();
     }
     public void Resume()
     {
-        ResumeVideo();
+        VideoPlayerPluginResumeVideo();
         StartCoroutine(UpdateTexture(null, true));
     }
 
     public void Stop()
     {
-        StopVideo();
+        VideoPlayerPluginStopVideo();
     }
     /// <summary>
     /// RewindはPlayToTextureだと動かない（テクスチャが更新されない）ので現状では使えないようにしている
     /// </summary>
     //public static void Rewind()
     //{
-    //    RewindVideo();
+    //    VideoPlayerPluginRewindVideo();
     //}
 
     //    public static void SeekTo(float time)
     //    {
-    //        SeekToVideo(time);
+    //        VideoPlayerPluginSeekToVideo(time);
     //    }
 }

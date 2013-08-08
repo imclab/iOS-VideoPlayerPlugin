@@ -108,70 +108,85 @@ static NSURL *_GetUrl(const char *videoURL) {
     return url;
 }
 
-extern "C" void PlayVideoView(int left, int top, int right, int bottom, const char *videoURL) {
+extern "C" void VideoPlayerPluginPlayVideoView(int left, int top, int right, int bottom, const char *videoURL) {
 
     if (!_GetPlayer()->view) {
         _GetPlayer()->view = [[VideoPlayerView alloc] initWithFrame:UnityGetGLView().frame];
         [UnityGetGLView() addSubview:_GetPlayer()->view];
     }
+
     _GetPlayer()->margin = CGRectMake((CGFloat) left, (CGFloat) top, (CGFloat) right, (CGFloat) bottom);
+
     [[NSNotificationCenter defaultCenter] addObserver:_GetPlayer() selector:@selector(orientationDidChange:) name:kUnityViewDidRotate object:nil];
     [_GetPlayer() playVideo:_GetUrl(videoURL)];
 }
 
-extern "C" void PlayVideo(const char *videoURL) {
+extern "C" void VideoPlayerPluginPlayVideo(const char *videoURL) {
+
     if (_GetPlayer()->player.isPlaying) {
         [_GetPlayer()->player unloadPlayer];
     }
+
     [_GetPlayer() playVideo:_GetUrl(videoURL)];
 }
-extern "C" void PauseVideo() {
+extern "C" void VideoPlayerPluginPauseVideo() {
+
     [_GetPlayer()->player pause];
 }
 
-extern "C" void ResumeVideo() {
+extern "C" void VideoPlayerPluginResumeVideo() {
+
     [_GetPlayer()->player resume];
 }
 
-extern "C" void RewindVideo() {
+extern "C" void VideoPlayerPluginRewindVideo() {
+
     if (_GetPlayer()->view) {
         [_GetPlayer()->player rewind];
     } else {
         //FIXME TextureでRewindすると既に読み込まれたものは表示されないのでUnity側でRewindは行わないようにしている
     }
 }
-extern "C" bool CanOutputToTexture(const char *videoURL) {
+extern "C" bool VideoPlayerPluginCanOutputToTexture(const char *videoURL) {
+
     return [VideoPlayer CanPlayToTexture:_GetUrl(videoURL)];
 }
 
-extern "C" bool PlayerReady() {
+extern "C" bool VideoPlayerPluginPlayerReady() {
+
     return [_GetPlayer()->player readyToPlay];
 }
 
-extern "C" float DurationSeconds() {
+extern "C" float VideoPlayerPluginDurationSeconds() {
+
     return [_GetPlayer()->player durationSeconds];
 }
 
-extern "C" void Extents(int *w, int *h) {
+extern "C" void VideoPlayerPluginExtents(int *w, int *h) {
+
     CGSize sz = [_GetPlayer()->player videoSize];
     *w = (int) sz.width;
     *h = (int) sz.height;
 }
 
-extern "C" int CurFrameTexture() {
+extern "C" int VideoPlayerPluginCurFrameTexture() {
+
     return [_GetPlayer()->player curFrameTexture];
 }
 
-extern "C" void SeekToVideo(float time) {
+extern "C" void VideoPlayerPluginSeekToVideo(float time) {
+
     [_GetPlayer()->player seekTo:time];
 }
 
-extern "C" bool IsPlaying() {
+extern "C" bool VideoPlayerPluginIsPlaying() {
+
     if (!_GetPlayer()->player)return false;
     return [_GetPlayer()->player isPlaying];
 }
 
-extern "C" void StopVideo() {
+extern "C" void VideoPlayerPluginStopVideo() {
+
     if (_GetPlayer()->player) {
         [_GetPlayer() unload];
     }
