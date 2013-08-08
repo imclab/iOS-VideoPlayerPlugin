@@ -1,4 +1,4 @@
-VideoPlayer
+VideoPlayerPlugin
 ===========
 
 iOSでMovieを再生するためのプラグインです
