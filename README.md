@@ -27,7 +27,7 @@ if (GUILayout.Button("<size=42>ViewPlay</size>", GUILayout.Height(200)))
 ```
 
 
-![](https://www.dropbox.com/s/2iairk09eyigcyx/2013-08-08%2023.34.31.png)
+![](https://dl.dropboxusercontent.com/u/153254465/%E7%94%BB%E5%83%8F%E3%81%A8%E3%81%8B/2013-08-08%2023.34.31.png)
 
 ### public void PlayTexture(string videoURL, Material material = null)
 マテリアルにVideoTextureを貼り付けます
@@ -36,7 +36,7 @@ materialがnullの場合は自分のMeshRendererにあるMaterialを使用しま
 
 videoURLはhttp/httpsかStreamingAssetsフォルダからの相対パス
 
-![](https://www.dropbox.com/s/72s4lbb5wgvd1ss/2013-08-08%2023.34.36.png)
+![](https://dl.dropboxusercontent.com/u/153254465/%E7%94%BB%E5%83%8F%E3%81%A8%E3%81%8B/2013-08-08%2023.34.36.png)
 
 ```
 if (GUILayout.Button("TexturePlay", GUILayout.Height(200)))
@@ -55,5 +55,6 @@ if (GUILayout.Button("TexturePlay", GUILayout.Height(200)))
 |isPlaying|再生中かどうか|
 
 
+[![ScreenShot](https://dl.dropboxusercontent.com/u/153254465/%E7%94%BB%E5%83%8F%E3%81%A8%E3%81%8B/Screen%20Shot%202013-08-09%20at%202.14.26.png)](http://youtu.be/SXHp_ztFksM)
 
 
