@@ -35,28 +35,36 @@ extern "C" __attribute__((visibility ("default"))) NSString *const kUnityViewDid
 }
 
 - (void)orientationDidChange:(NSNotification *)notification {
+
+    if (view) [self resizeView];
 }
 
 - (void)onPlayerReady {
+    
     if (!player.isPlaying) {
-        CGFloat scale = UnityGetGLView().contentScaleFactor;
-        UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-        CGRect bounds;
-
-        if (orientation) {
-            bounds.size.width = UnityGetGLView().bounds.size.width - (margin.origin.x + margin.size.width) / scale;
-            bounds.size.height = UnityGetGLView().bounds.size.height - (margin.origin.y + margin.size.height) / scale;
-        } else {
-            bounds.size.width = UnityGetGLView().bounds.size.height - (margin.origin.x + margin.size.width) / scale;
-            bounds.size.height = UnityGetGLView().bounds.size.width - (margin.origin.y + margin.size.height) / scale;
-        }
-
-        view.bounds = bounds;
-        view.center = CGPointMake(view.bounds.size.width / 2 + margin.origin.x / scale, view.bounds.size.height / 2 + margin.origin.y / scale);
+        if (view) [self resizeView];
         [self play];
     }
 }
 
+- (void)resizeView {
+    //FIXME Orientationが変更された時にうまくリサイズされていない view frame更新
+
+    CGFloat scale = UnityGetGLView().contentScaleFactor;
+    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+    CGRect bounds;
+
+    if (orientation) {
+        bounds.size.width = UnityGetGLView().bounds.size.width - (margin.origin.x + margin.size.width) / scale;
+        bounds.size.height = UnityGetGLView().bounds.size.height - (margin.origin.y + margin.size.height) / scale;
+    } else {
+        bounds.size.width = UnityGetGLView().bounds.size.height - (margin.origin.x + margin.size.width) / scale;
+        bounds.size.height = UnityGetGLView().bounds.size.width - (margin.origin.y + margin.size.height) / scale;
+    }
+
+    view.bounds = bounds;
+    view.center = CGPointMake(view.bounds.size.width / 2 + margin.origin.x / scale, view.bounds.size.height / 2 + margin.origin.y / scale);
+}
 
 - (void)play {
     if (view) {
