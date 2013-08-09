@@ -3,6 +3,8 @@ VideoPlayerPlugin
 
 iOSでMovieを再生するためのプラグインです
 
+[![ScreenShot](https://dl.dropboxusercontent.com/u/153254465/%E7%94%BB%E5%83%8F%E3%81%A8%E3%81%8B/Screen%20Shot%202013-08-09%20at%202.14.26.png)](http://youtu.be/SXHp_ztFksM)
+
 ##Functions
 |Name|Description|
 |:---|:---|
@@ -55,6 +57,6 @@ if (GUILayout.Button("TexturePlay", GUILayout.Height(200)))
 |isPlaying|再生中かどうか|
 
 
-[![ScreenShot](https://dl.dropboxusercontent.com/u/153254465/%E7%94%BB%E5%83%8F%E3%81%A8%E3%81%8B/Screen%20Shot%202013-08-09%20at%202.14.26.png)](http://youtu.be/SXHp_ztFksM)
+
 
 
